@@ -1,3 +1,5 @@
+import getpass
+
 def get_hint(secret, guess):
     correct_position = sum(s == g for s, g in zip(secret, guess))
     correct_digit = sum(min(secret.count(d), guess.count(d)) for d in set(guess)) - correct_position
@@ -12,9 +14,13 @@ def get_valid_guess(length):
 
 def play_round(setter, guesser):
     print(f"Player {setter}, set your secret number.")
-    secret = input("Set your multi-digit secret number: ")
+    secret = getpass.getpass("Set your multi-digit secret number (it will be hidden): ")
+    while not (secret.isdigit() and len(secret) > 0):
+        print("Invalid input. Please enter a multi-digit number.")
+        secret = getpass.getpass("Set your multi-digit secret number (it will be hidden): ")
+        print(f"player {guesser},Now its time to guess the number!")
+
     attempts = 0
-    
     while True:
         guess = get_valid_guess(len(secret))
         attempts += 1
@@ -38,4 +44,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
